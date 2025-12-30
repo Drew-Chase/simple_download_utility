@@ -1,6 +1,6 @@
 # Simple Download Utility
 
-The `DownloadUtil` module provides utilities for downloading files with progress tracking and SHA1 validation support.
+The `simple_download_utility` crate provides utilities for downloading files with progress tracking and SHA1 validation support.
 
 ## Structures
 
@@ -137,7 +137,7 @@ pub async fn download_multiple_files(
 ### Download Single File Without Progress
 
 ```rust,no_run
-use piston_mc::download_util::download_file;
+use simple_download_utility::download_file;
 
 #[tokio::main]
 async fn main() {
@@ -151,7 +151,7 @@ async fn main() {
 ### Download Single File With Progress
 
 ```rust,no_run
-use piston_mc::download_util::{download_file, DownloadProgress};
+use simple_download_utility::{download_file, DownloadProgress};
 
 #[tokio::main]
 async fn main() {
@@ -180,7 +180,7 @@ async fn main() {
 ### Download With SHA1 Validation
 
 ```rust,no_run
-use piston_mc::download_util::download_and_validate_file;
+use simple_download_utility::download_and_validate_file;
 
 #[tokio::main]
 async fn main() {
@@ -197,7 +197,7 @@ async fn main() {
 ### Download Multiple Files
 
 ```rust,no_run
-use piston_mc::download_util::{download_multiple_files, FileDownloadArguments, MultiDownloadProgress};
+use simple_download_utility::{download_multiple_files, FileDownloadArguments, MultiDownloadProgress};
 
 #[tokio::main]
 async fn main() {
