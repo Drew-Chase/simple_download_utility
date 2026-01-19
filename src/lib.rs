@@ -68,13 +68,13 @@ pub struct MultiDownloadProgress {
 /// * `url` - The URL of the file to be downloaded. This is a required field and must be a valid URL string.
 ///
 /// * `sha1` - An optional SHA-1 checksum string used to verify the integrity of the downloaded file.
-///            If provided, the downloaded file's checksum will be compared with this value.
+///   If provided, the downloaded file's checksum will be compared with this value.
 ///
 /// * `path` - The filesystem path where the downloaded file will be saved. This is a required field and must
-///            point to a valid location accessible to the program.
+///   point to a valid location accessible to the program.
 ///
 /// * `sender` - An optional sender channel (`tokio::sync::mpsc::Sender`) for sending updates on the download progress.
-///              If provided, progress updates will be communicated through this channel.
+///   If provided, progress updates will be communicated through this channel.
 ///
 /// # Example
 ///
