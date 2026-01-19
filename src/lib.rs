@@ -411,7 +411,7 @@ pub async fn download_file_with_client(
             let _ = sender.send(progress).await;
         }
     } else {
-        let result = reqwest::get(url).await?;
+        let result = client.get(url).send().await?;
         let bytes = result.bytes().await?;
         file.write_all(bytes.iter().as_slice()).await?;
     }
