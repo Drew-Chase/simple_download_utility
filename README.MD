@@ -2,6 +2,27 @@
 
 The `simple_download_utility` crate provides utilities for downloading files with progress tracking and SHA1 validation support.
 
+## Table of Contents
+
+- [Structures](#structures)
+  - [DownloadProgress](#downloadprogress)
+  - [MultiDownloadProgress](#multidownloadprogress)
+  - [FileDownloadArguments](#filedownloadarguments)
+- [Functions](#functions)
+  - [download_file()](#download_file)
+  - [download_file_with_client()](#download_file_with_client)
+  - [download_and_validate_file()](#download_and_validate_file)
+  - [download_and_validate_file_with_client()](#download_and_validate_file_with_client)
+  - [download_multiple_files()](#download_multiple_files)
+  - [download_multiple_files_with_client()](#download_multiple_files_with_client)
+- [Examples](#examples)
+  - [Download Single File Without Progress](#download-single-file-without-progress)
+  - [Download Single File With Progress](#download-single-file-with-progress)
+  - [Download With SHA1 Validation](#download-with-sha1-validation)
+  - [Download With Custom Client](#download-with-custom-client)
+  - [Download Multiple Files](#download-multiple-files)
+- [Progress Tracking Pattern](#progress-tracking-pattern)
+
 ## Structures
 
 ### DownloadProgress
