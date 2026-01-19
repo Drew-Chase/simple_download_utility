@@ -90,6 +90,28 @@ pub async fn download_file(
 
 **Returns:** `Result<()>` - Success or error
 
+### download_file_with_client()
+
+Downloads a single file using a provided HTTP client.
+
+```rust,ignore
+pub async fn download_file_with_client(
+	client: impl Borrow<reqwest::Client>,
+	url: impl AsRef<str>,
+	path: impl AsRef<Path>,
+	sender: Option<tokio::sync::mpsc::Sender<DownloadProgress>>,
+) -> Result<()>
+```
+
+**Parameters:**
+
+- `client` - HTTP client to use (accepts `reqwest::Client`, `&reqwest::Client`, or `Arc<reqwest::Client>`)
+- `url` - URL to download from
+- `path` - Destination file path (parent directories are created automatically)
+- `sender` - Optional channel for receiving download progress updates
+
+**Returns:** `Result<()>` - Success or error
+
 ### download_and_validate_file()
 
 Downloads a file and validates its SHA1 hash.
@@ -112,6 +134,30 @@ pub async fn download_and_validate_file(
 
 **Returns:** `Result<()>` - Success or error if hash doesn't match
 
+### download_and_validate_file_with_client()
+
+Downloads a file using a provided HTTP client and validates its SHA1 hash.
+
+```rust,ignore
+pub async fn download_and_validate_file_with_client(
+	client: impl Borrow<reqwest::Client>,
+	url: impl AsRef<str>,
+	path: impl AsRef<Path>,
+	hash: impl AsRef<str>,
+	sender: Option<tokio::sync::mpsc::Sender<DownloadProgress>>,
+) -> Result<()>
+```
+
+**Parameters:**
+
+- `client` - HTTP client to use (accepts `reqwest::Client`, `&reqwest::Client`, or `Arc<reqwest::Client>`)
+- `url` - URL to download from
+- `path` - Destination file path
+- `hash` - Expected SHA1 hash
+- `sender` - Optional channel for receiving download progress updates
+
+**Returns:** `Result<()>` - Success or error if hash doesn't match
+
 ### download_multiple_files()
 
 Downloads multiple files concurrently with progress tracking.
@@ -126,6 +172,28 @@ pub async fn download_multiple_files(
 
 **Parameters:**
 
+- `items` - List of files to download
+- `parallel` - Maximum number of concurrent downloads
+- `sender` - Optional channel for aggregate progress updates
+
+**Returns:** `Result<()>` - Success or first error encountered
+
+### download_multiple_files_with_client()
+
+Downloads multiple files concurrently using a provided HTTP client.
+
+```rust,ignore
+pub async fn download_multiple_files_with_client(
+	client: reqwest::Client,
+	items: Vec<FileDownloadArguments>,
+	parallel: u16,
+	sender: Option<tokio::sync::mpsc::Sender<MultiDownloadProgress>>,
+) -> Result<()>
+```
+
+**Parameters:**
+
+- `client` - HTTP client to use (will be wrapped in `Arc` internally for sharing across concurrent downloads)
 - `items` - List of files to download
 - `parallel` - Maximum number of concurrent downloads
 - `sender` - Optional channel for aggregate progress updates
@@ -191,6 +259,38 @@ async fn main() {
 	download_and_validate_file(url, path, expected_hash, None)
 		.await
 		.expect("Download or validation failed");
+}
+```
+
+### Download With Custom Client
+
+Use the `_with_client` variants to share a configured HTTP client across multiple downloads:
+
+```rust,no_run
+use simple_download_utility::download_file_with_client;
+use std::sync::Arc;
+use std::time::Duration;
+
+#[tokio::main]
+async fn main() {
+	// Create a configured client
+	let client = reqwest::Client::builder()
+		.timeout(Duration::from_secs(30))
+		.user_agent("my-app/1.0")
+		.build()
+		.expect("Failed to create client");
+
+	// Wrap in Arc to share across multiple downloads
+	let client = Arc::new(client);
+
+	// Use the same client for multiple downloads
+	download_file_with_client(client.clone(), "https://example.com/file1.jar", "downloads/file1.jar", None)
+		.await
+		.expect("Download failed");
+
+	download_file_with_client(client.clone(), "https://example.com/file2.jar", "downloads/file2.jar", None)
+		.await
+		.expect("Download failed");
 }
 ```
 
