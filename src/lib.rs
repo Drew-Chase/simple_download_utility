@@ -501,7 +501,7 @@ pub async fn download_file_with_client(
 /// }
 /// ```
 pub async fn download_multiple_files_with_client(
-    client: reqwest::Client,
+    client: impl Borrow<reqwest::Client>,
     items: Vec<FileDownloadArguments>,
     parallel: u16,
     sender: Option<tokio::sync::mpsc::Sender<MultiDownloadProgress>>,
@@ -509,6 +509,7 @@ pub async fn download_multiple_files_with_client(
     use futures_util::StreamExt;
     use std::sync::Arc;
     use tokio::sync::Mutex;
+    let client = client.borrow().clone();
 
     let files_total = items.len();
     let file_names: Vec<String> = items
