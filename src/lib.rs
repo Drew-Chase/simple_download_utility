@@ -372,6 +372,8 @@ pub async fn download_file_with_client(
     path: impl AsRef<Path>,
     sender: Option<tokio::sync::mpsc::Sender<DownloadProgress>>,
 ) -> Result<()> {
+    use futures_util::StreamExt;
+
     let client = client.borrow();
     let url = url.as_ref();
     let path = path.as_ref();
@@ -387,8 +389,6 @@ pub async fn download_file_with_client(
         let mut stream = response.bytes_stream();
         let mut downloaded = 0;
         let start_time = Instant::now();
-
-        use futures_util::StreamExt;
 
         while let Some(chunk) = stream.next().await {
             let chunk = chunk?;
